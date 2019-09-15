@@ -38,7 +38,17 @@ class DeckService:
         drawn_card = self.deck.pop()
         return drawn_card
 
-    def draw_dealer_initial_cards(self):
+    def draw_dealer_cards(self, dealer):
         first_card = self.draw_card()
         first_card.show_card()
+        dealer.score += first_card.face_value
         return [first_card, self.draw_card()]
+
+    def draw_player_cards(self, player):
+        first_card = self.draw_card()
+        second_card = self.draw_card()
+        first_card.show_card()
+        player.score += first_card.face_value
+        second_card.show_card()
+        player.score += second_card.face_value
+        return [first_card, second_card]
