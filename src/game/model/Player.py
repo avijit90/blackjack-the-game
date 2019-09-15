@@ -6,4 +6,5 @@ class Player:
         self.current_cards = []
 
     def __str__(self):
-        print(f'name : {self.name}, score : {self.score}, current_cards : {self.current_cards} ')
+        return f'name : {self.name}, score : {self.score}, ' \
+               f'current_cards : {[card.face_value for card in self.current_cards]} '
