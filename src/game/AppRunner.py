@@ -21,11 +21,11 @@ def execute():
     player = Player('Player')
     dealer = Player('Dealer')
     root = Tk()
-    display_service = DisplayService(player, dealer, root)
     deck_service = DeckService()
     deck_service.build_deck()
     dealer.current_cards = deck_service.draw_dealer_cards(dealer)
     player.current_cards = deck_service.draw_player_cards(player)
+    display_service = DisplayService(player, dealer, root, deck_service)
     display_service.display_table(deck_service.deck)
 
 
