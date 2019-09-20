@@ -44,12 +44,14 @@ class DisplayService:
         self.top.mainloop()
 
     def show_player_cards(self, canvas):
+        print(self.player)
         player_spacing = 95
         start = 620
         for position, player_card in enumerate(self.player.current_cards, start=0):
             canvas.create_image(start - (position * player_spacing), 400, anchor=NE, image=player_card.get_card_image())
 
     def show_dealer_cards(self, canvas, delete_old):
+        print(self.dealer)
         player_spacing = 95
         start = 620
         for position, dealer_card in enumerate(self.dealer.current_cards, start=0):
@@ -78,6 +80,7 @@ class DisplayService:
         for card in self.dealer.current_cards:
             if not card.visible:
                 card.visible = True
+                self.dealer.score += card.face_value
                 self.show_dealer_cards(self.canvas, True)
                 move_complete = True
                 break
