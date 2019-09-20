@@ -64,17 +64,27 @@ class DisplayService:
                                         image=dealer_card.get_card_image())
 
     def hit(self):
-        self.player.collect_card(self.deck_service.draw_card())
+        new_card = self.deck_service.draw_card()
+        new_card.visible = True
+        self.player.collect_card(new_card)
+        self.show_player_cards(self.canvas)
         self.play_dealer_move()
 
     def stay(self):
         self.play_dealer_move()
 
     def play_dealer_move(self):
+        move_complete = False
         for card in self.dealer.current_cards:
             if not card.visible:
                 card.visible = True
                 self.show_dealer_cards(self.canvas, True)
-                return
-            else:
-                self.dealer.collect_card(self.deck_service.draw_card())
+                move_complete = True
+                break
+
+        if not move_complete:
+            new_card = self.deck_service.draw_card()
+            new_card.visible = True
+            self.dealer.collect_card(new_card)
+            self.show_dealer_cards(self.canvas, False)
+            return
