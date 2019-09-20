@@ -8,3 +8,7 @@ class Player:
     def __str__(self):
         return f'name : {self.name}, score : {self.score}, ' \
                f'current_cards : {[card.face_value for card in self.current_cards]} '
+
+    def collect_card(self, new_card):
+        self.current_cards.append(new_card)
+        self.score += new_card.face_value
