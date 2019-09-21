@@ -1,4 +1,5 @@
 from tkinter import *
+from PIL import Image
 
 
 class DisplayService:
@@ -45,14 +46,19 @@ class DisplayService:
 
     def show_player_cards(self, canvas):
         print(self.player)
-        player_spacing = 95
+        player_spacing = 25
         start = 620
         for position, player_card in enumerate(self.player.current_cards, start=0):
-            canvas.create_image(start - (position * player_spacing), 400, anchor=NE, image=player_card.get_card_image())
+            image = Image.open(player_card.face_img_path)
+            # rotate 270 degrees counter-clockwise
+            imRotate = image.rotate(player_spacing)
+            filename = f"{player_card.face_img_path}_rotated.png"
+            imRotate.save(filename)
+            canvas.create_image(start - (position * player_spacing), 400, anchor=NE, image=filename)
 
     def show_dealer_cards(self, canvas, delete_old):
         print(self.dealer)
-        player_spacing = 95
+        player_spacing = 25
         start = 620
         for position, dealer_card in enumerate(self.dealer.current_cards, start=0):
             if not dealer_card.visible:
