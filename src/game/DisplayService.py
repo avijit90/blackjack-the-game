@@ -1,5 +1,5 @@
 from tkinter import *
-from PIL import Image
+import time
 
 
 class DisplayService:
@@ -47,28 +47,25 @@ class DisplayService:
     def show_player_cards(self, canvas):
         print(self.player)
         player_spacing = 25
-        start = 620
+        start = 520
         for position, player_card in enumerate(self.player.current_cards, start=0):
-            image = Image.open(player_card.face_img_path)
-            # rotate 270 degrees counter-clockwise
-            imRotate = image.rotate(player_spacing)
-            filename = f"{player_card.face_img_path}_rotated.png"
-            imRotate.save(filename)
-            canvas.create_image(start - (position * player_spacing), 400, anchor=NE, image=filename)
+            canvas.create_image(start + (position * player_spacing), (400 - (position * 9)), anchor=NE,
+                                image=player_card.get_card_image())
 
     def show_dealer_cards(self, canvas, delete_old):
         print(self.dealer)
         player_spacing = 25
-        start = 620
+        start = 520
         for position, dealer_card in enumerate(self.dealer.current_cards, start=0):
             if not dealer_card.visible:
-                self.image_to_open = canvas.create_image(start - (position * player_spacing), 50, anchor=NE,
+                self.image_to_open = canvas.create_image(start + (position * player_spacing), (50 - (position * 9)),
+                                                         anchor=NE,
                                                          image=dealer_card.get_card_image())
             else:
                 if delete_old:
                     canvas.itemconfig(self.image_to_open, image=dealer_card.get_card_image())
                 else:
-                    canvas.create_image(start - (position * player_spacing), 50, anchor=NE,
+                    canvas.create_image(start + (position * player_spacing), (50 - (position * 9)), anchor=NE,
                                         image=dealer_card.get_card_image())
 
     def hit(self):
@@ -82,6 +79,7 @@ class DisplayService:
         self.play_dealer_move()
 
     def play_dealer_move(self):
+        time.sleep(2)
         move_complete = False
         for card in self.dealer.current_cards:
             if not card.visible:
