@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import time
 
 
@@ -73,6 +74,7 @@ class DisplayService:
         new_card.visible = True
         self.player.collect_card(new_card)
         self.show_player_cards(self.canvas)
+        self.inspect_result()
         self.play_dealer_move()
 
     def stay(self):
@@ -94,4 +96,14 @@ class DisplayService:
             new_card.visible = True
             self.dealer.collect_card(new_card)
             self.show_dealer_cards(self.canvas, False)
-            return
+            self.inspect_result()
+
+        self.inspect_result()
+
+    def inspect_result(self):
+        if self.player.score > 21 and self.dealer.score > 21:
+            messagebox.showinfo("Result", "Tie", parent=self.top)
+        elif self.player.score > 21:
+            messagebox.showinfo("Result", "Dealer Wins !!", parent=self.top)
+        elif self.dealer.score > 21:
+            messagebox.showinfo("Result", "Player Wins !!", parent=self.top)
