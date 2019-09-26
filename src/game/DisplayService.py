@@ -13,6 +13,7 @@ class DisplayService:
         self.deck_service = deck_service
         self.active_player = player
         self.canvas = None
+        self.result = False
 
     def display_table(self, deck):
         canvas = Canvas(self.top, bg="green", height=600, width=1100)
@@ -26,11 +27,9 @@ class DisplayService:
             canvas.create_image(200 + (deck_spacing * position), 250, anchor=NE, image=card.get_card_image())
 
         # Dealer
-        print(self.dealer)
         self.show_dealer_cards(canvas, False)
 
         # Player
-        print(self.player)
         self.show_player_cards(canvas)
 
         hit_button = Button(self.top, text="Hit", command=self.hit, anchor=W)
@@ -70,17 +69,27 @@ class DisplayService:
                                         image=dealer_card.get_card_image())
 
     def hit(self):
+        if self.result:
+            return
+
         new_card = self.deck_service.draw_card()
         new_card.visible = True
         self.player.collect_card(new_card)
         self.show_player_cards(self.canvas)
-        self.inspect_result()
         self.play_dealer_move()
 
     def stay(self):
+        if self.result:
+            return
+
         self.play_dealer_move()
 
     def play_dealer_move(self):
+        self.inspect_result()
+
+        if self.result:
+            return
+
         time.sleep(2)
         move_complete = False
         for card in self.dealer.current_cards:
@@ -96,14 +105,19 @@ class DisplayService:
             new_card.visible = True
             self.dealer.collect_card(new_card)
             self.show_dealer_cards(self.canvas, False)
-            self.inspect_result()
 
         self.inspect_result()
 
     def inspect_result(self):
+        if self.result:
+            return
+
         if self.player.score > 21 and self.dealer.score > 21:
+            self.result = True
             messagebox.showinfo("Result", "Tie", parent=self.top)
         elif self.player.score > 21:
+            self.result = True
             messagebox.showinfo("Result", "Dealer Wins !!", parent=self.top)
         elif self.dealer.score > 21:
+            self.result = True
             messagebox.showinfo("Result", "Player Wins !!", parent=self.top)
