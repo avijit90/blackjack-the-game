@@ -1,6 +1,6 @@
+import time
 from tkinter import *
 from tkinter import messagebox
-import time
 
 
 class DisplayService:
@@ -40,6 +40,12 @@ class DisplayService:
         stay_button.configure(width=7, activebackground="#33B5E5", relief=FLAT)
         canvas.create_window(500, 300, anchor=NW, window=stay_button)
 
+        canvas.create_text(800, 50, fill="darkblue", font="Times 20 italic bold",
+                           text="Dealer Score")
+
+        canvas.create_text(800, 400, fill="white", font="Times 20 italic bold",
+                           text="Dealer Score")
+
         canvas.pack()
         self.canvas = canvas
         self.top.mainloop()
@@ -48,6 +54,9 @@ class DisplayService:
         print(self.player)
         player_spacing = 25
         start = 520
+
+        canvas.create_text(800, 430, fill="white", font="Times 20 italic bold", text=self.player.score)
+
         for position, player_card in enumerate(self.player.current_cards, start=0):
             canvas.create_image(start + (position * player_spacing), (400 - (position * 9)), anchor=NE,
                                 image=player_card.get_card_image())
@@ -56,6 +65,9 @@ class DisplayService:
         print(self.dealer)
         player_spacing = 25
         start = 520
+
+        canvas.create_text(800, 80, fill="darkblue", font="Times 20 italic bold", text=self.dealer.score)
+
         for position, dealer_card in enumerate(self.dealer.current_cards, start=0):
             if not dealer_card.visible:
                 self.image_to_open = canvas.create_image(start + (position * player_spacing), (50 - (position * 9)),
