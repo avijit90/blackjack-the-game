@@ -91,7 +91,7 @@ class DisplayService:
         new_card.visible = True
         self.player.collect_card(new_card)
         self.show_player_cards(self.canvas)
-        self.play_dealer_move()
+        self.inspect_result()
 
     def stay(self):
         if self.result:
@@ -135,3 +135,8 @@ class DisplayService:
         elif self.dealer.score > 21:
             self.result = True
             messagebox.showinfo("Result", "Player Wins !!", parent=self.top)
+        elif 17 < self.dealer.score < 21 and 21 >= self.player.score > self.dealer.score:
+            self.result = True
+            messagebox.showinfo("Result", "Player Wins !!", parent=self.top)
+
+
