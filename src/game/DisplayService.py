@@ -1,15 +1,18 @@
 from tkinter import *
 from tkinter import messagebox
 
+from DeckService import DeckService
+from Player import Player
+
 
 class DisplayService:
 
-    def __init__(self, player, dealer, root, deck_service):
-        self.player = player
-        self.dealer = dealer
+    def __init__(self, root):
+        self.player = None
+        self.dealer = None
         self.image_to_open = None
         self.top = root
-        self.deck_service = deck_service
+        self.deck_service = None
         self.canvas = None
         self.result = False
 
@@ -37,6 +40,10 @@ class DisplayService:
         stay_button = Button(self.top, text="Stay", command=self.stay, anchor=W)
         stay_button.configure(width=7, activebackground="#33B5E5", relief=FLAT)
         canvas.create_window(500, 300, anchor=NW, window=stay_button)
+
+        reset_button = Button(self.top, text="Play Again", command=self.reset_game, anchor=W)
+        reset_button.configure(width=10, activebackground="#33B5E5", relief=FLAT)
+        canvas.create_window(565, 300, anchor=NW, window=reset_button)
 
         canvas.create_text(800, 50, fill="cyan", font="Times 20 italic bold",
                            text="Dealer Score")
@@ -139,4 +146,14 @@ class DisplayService:
             self.result = True
             messagebox.showinfo("Result", "Player Wins !!", parent=self.top)
 
+    def run_game(self):
+        self.deck_service = DeckService()
+        self.deck_service.build_deck()
+        self.player = Player('Player')
+        self.dealer = Player('Dealer')
+        self.dealer.current_cards = self.deck_service.draw_dealer_cards(self.dealer)
+        self.player.current_cards = self.deck_service.draw_player_cards(self.player)
+        self.display_table(self.deck_service.deck)
 
+    def reset_game(self):
+        self.run_game()
