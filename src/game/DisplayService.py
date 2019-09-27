@@ -1,4 +1,3 @@
-import time
 from tkinter import *
 from tkinter import messagebox
 
@@ -11,7 +10,6 @@ class DisplayService:
         self.image_to_open = None
         self.top = root
         self.deck_service = deck_service
-        self.active_player = player
         self.canvas = None
         self.result = False
 
@@ -47,6 +45,7 @@ class DisplayService:
                            text="Player Score")
 
         canvas.pack()
+        self.top.title('Blackjack')
         self.canvas = canvas
         self.top.mainloop()
 
@@ -106,7 +105,6 @@ class DisplayService:
         if self.result:
             return
 
-        time.sleep(2)
         move_complete = False
         for card in self.dealer.current_cards:
             if not card.visible:
