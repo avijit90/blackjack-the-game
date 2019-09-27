@@ -143,7 +143,7 @@ class DisplayService:
         if self.result:
             return
 
-        if self.player.score > 21 and self.dealer.score > 21:
+        if self.player.score == 21 and self.dealer.score == 21:
             self.result = True
             messagebox.showinfo("Result", "Tie", parent=self.top)
         elif self.player.score > 21:
