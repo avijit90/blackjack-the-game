@@ -19,7 +19,7 @@ class DisplayService:
     def display_table(self, deck, reset_game):
 
         if not reset_game:
-            canvas = Canvas(self.top, bg="green", height=600, width=1100)
+            canvas = Canvas(self.top, bg="green", height=600, width=950)
         else:
             canvas = self.canvas
 
@@ -39,13 +39,13 @@ class DisplayService:
 
         hit_button = Button(self.top, text="Hit", command=self.hit, anchor=W)
         hit_button.configure(width=5, activebackground="#33B5E5", relief=FLAT)
-        canvas.create_window(450, 300, anchor=NW, window=hit_button)
+        canvas.create_window(400, 300, anchor=NW, window=hit_button)
         stay_button = Button(self.top, text="Stay", command=self.stay, anchor=W)
         stay_button.configure(width=7, activebackground="#33B5E5", relief=FLAT)
-        canvas.create_window(500, 300, anchor=NW, window=stay_button)
+        canvas.create_window(450, 300, anchor=NW, window=stay_button)
         reset_button = Button(self.top, text="Play Again", command=self.reset_game, anchor=W)
         reset_button.configure(width=10, activebackground="#33B5E5", relief=FLAT)
-        canvas.create_window(565, 300, anchor=NW, window=reset_button)
+        canvas.create_window(515, 300, anchor=NW, window=reset_button)
 
         if reset_game:
             canvas.delete("dealer_score_title")
