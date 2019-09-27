@@ -16,8 +16,12 @@ class DisplayService:
         self.canvas = None
         self.result = False
 
-    def display_table(self, deck):
-        canvas = Canvas(self.top, bg="green", height=600, width=1100)
+    def display_table(self, deck, reset_game):
+
+        if not reset_game:
+            canvas = Canvas(self.top, bg="green", height=600, width=1100)
+        else:
+            canvas = self.canvas
 
         # Available deck
         start = 200
@@ -36,25 +40,31 @@ class DisplayService:
         hit_button = Button(self.top, text="Hit", command=self.hit, anchor=W)
         hit_button.configure(width=5, activebackground="#33B5E5", relief=FLAT)
         canvas.create_window(450, 300, anchor=NW, window=hit_button)
-
         stay_button = Button(self.top, text="Stay", command=self.stay, anchor=W)
         stay_button.configure(width=7, activebackground="#33B5E5", relief=FLAT)
         canvas.create_window(500, 300, anchor=NW, window=stay_button)
-
         reset_button = Button(self.top, text="Play Again", command=self.reset_game, anchor=W)
         reset_button.configure(width=10, activebackground="#33B5E5", relief=FLAT)
         canvas.create_window(565, 300, anchor=NW, window=reset_button)
 
+        if reset_game:
+            canvas.delete("dealer_score_title")
+            canvas.delete("player_score_title")
+
         canvas.create_text(800, 50, fill="cyan", font="Times 20 italic bold",
-                           text="Dealer Score")
+                           text="Dealer Score", tag='dealer_score_title')
 
         canvas.create_text(800, 400, fill="white", font="Times 20 italic bold",
-                           text="Player Score")
+                           text="Player Score", tag='player_score_title')
 
         canvas.pack()
-        self.top.title('Blackjack')
-        self.canvas = canvas
-        self.top.mainloop()
+
+        if not reset_game:
+            self.top.title('Blackjack')
+            self.canvas = canvas
+            self.top.mainloop()
+        else:
+            self.canvas = canvas
 
     def show_player_cards(self, canvas):
         print(self.player)
@@ -146,14 +156,15 @@ class DisplayService:
             self.result = True
             messagebox.showinfo("Result", "Player Wins !!", parent=self.top)
 
-    def run_game(self):
+    def run_game(self, reset_game):
         self.deck_service = DeckService()
         self.deck_service.build_deck()
         self.player = Player('Player')
         self.dealer = Player('Dealer')
         self.dealer.current_cards = self.deck_service.draw_dealer_cards(self.dealer)
         self.player.current_cards = self.deck_service.draw_player_cards(self.player)
-        self.display_table(self.deck_service.deck)
+        self.display_table(self.deck_service.deck, reset_game)
 
     def reset_game(self):
-        self.run_game()
+        print('<<---------------<< Reset game called >>------------------>>')
+        self.run_game(True)

@@ -12,7 +12,7 @@ class AppRunner:
 def execute():
     root = Tk()
     display_service = DisplayService(root)
-    display_service.run_game()
+    display_service.run_game(False)
 
 
 if __name__ == '__main__':
