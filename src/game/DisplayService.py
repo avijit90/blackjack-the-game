@@ -18,6 +18,8 @@ class DisplayService:
 
     def display_table(self, deck, reset_game):
 
+        self.result = False
+
         if not reset_game:
             canvas = Canvas(self.top, bg="green", height=600, width=950)
         else:
