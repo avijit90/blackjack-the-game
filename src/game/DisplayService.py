@@ -30,8 +30,14 @@ class DisplayService:
         end = 250
         deck_spacing = ((end - start) // (len(deck) - 4))
 
+        if reset_game:
+            canvas.delete("dealer_score_tag")
+            canvas.delete("player_score_tag")
+            canvas.delete("clear_on_Reset")
+
         for position, card in enumerate(deck, start=1):
-            canvas.create_image(200 + (deck_spacing * position), 250, anchor=NE, image=card.get_card_image())
+            canvas.create_image(200 + (deck_spacing * position), 250, anchor=NE, image=card.get_card_image(),
+                                tag='clear_on_Reset')
 
         # Dealer
         self.show_dealer_cards(canvas, False)
@@ -49,15 +55,11 @@ class DisplayService:
         reset_button.configure(width=10, activebackground="#33B5E5", relief=FLAT)
         canvas.create_window(515, 300, anchor=NW, window=reset_button)
 
-        if reset_game:
-            canvas.delete("dealer_score_title")
-            canvas.delete("player_score_title")
-
         canvas.create_text(800, 50, fill="cyan", font="Times 20 italic bold",
-                           text="Dealer Score", tag='dealer_score_title')
+                           text="Dealer Score", tag='clear_on_Reset')
 
         canvas.create_text(800, 400, fill="white", font="Times 20 italic bold",
-                           text="Player Score", tag='player_score_title')
+                           text="Player Score", tag='clear_on_Reset')
 
         canvas.pack()
 
@@ -79,7 +81,7 @@ class DisplayService:
 
         for position, player_card in enumerate(self.player.current_cards, start=0):
             canvas.create_image(start + (position * player_spacing), (400 - (position * 9)), anchor=NE,
-                                image=player_card.get_card_image())
+                                image=player_card.get_card_image(), tag='clear_on_Reset')
 
     def show_dealer_cards(self, canvas, delete_old):
         print(self.dealer)
@@ -94,13 +96,13 @@ class DisplayService:
             if not dealer_card.visible:
                 self.image_to_open = canvas.create_image(start + (position * player_spacing), (50 - (position * 9)),
                                                          anchor=NE,
-                                                         image=dealer_card.get_card_image())
+                                                         image=dealer_card.get_card_image(), tag='test_image')
             else:
                 if delete_old:
                     canvas.itemconfig(self.image_to_open, image=dealer_card.get_card_image())
                 else:
                     canvas.create_image(start + (position * player_spacing), (50 - (position * 9)), anchor=NE,
-                                        image=dealer_card.get_card_image())
+                                        image=dealer_card.get_card_image(), tag='test_image')
 
     def hit(self):
         if self.result:
@@ -168,5 +170,5 @@ class DisplayService:
         self.display_table(self.deck_service.deck, reset_game)
 
     def reset_game(self):
-        print('<<---------------<< Reset game called >>------------------>>')
+        print('<<---------------<< Resetting Game >>------------------>>')
         self.run_game(True)
