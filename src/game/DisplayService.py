@@ -54,7 +54,7 @@ class DisplayService:
         reset_button.configure(width=10, activebackground="#33B5E5", relief=FLAT)
         canvas.create_window(515, 300, anchor=NW, window=reset_button)
 
-        canvas.create_text(800, 50, fill="cyan", font="Times 20 italic bold",
+        canvas.create_text(800, 130, fill="cyan", font="Times 20 italic bold",
                            text="Dealer Score", tag='clear_on_Reset')
 
         canvas.create_text(800, 400, fill="white", font="Times 20 italic bold",
@@ -77,6 +77,9 @@ class DisplayService:
         canvas.delete("player_score_tag")
         canvas.create_text(800, 430, fill="white", font="Times 20 italic bold", text=self.player.score,
                            tag="player_score_tag")
+        canvas.delete("player_money_tag")
+        canvas.create_text(850, 430, fill="yellow", font="Times 20 italic bold", text=self.player.money,
+                           tag="player_money_tag")
 
         for position, player_card in enumerate(self.player.current_cards, start=0):
             canvas.create_image(start + (position * player_spacing), (400 - (position * 9)), anchor=NE,
@@ -88,8 +91,11 @@ class DisplayService:
         start = 520
 
         canvas.delete("dealer_score_tag")
-        canvas.create_text(800, 80, fill="cyan", font="Times 20 italic bold", text=self.dealer.score,
+        canvas.delete("dealer_money_tag")
+        canvas.create_text(800, 160, fill="cyan", font="Times 20 italic bold", text=self.dealer.score,
                            tag="dealer_score_tag")
+        canvas.create_text(850, 160, fill="yellow", font="Times 20 italic bold", text=self.dealer.money,
+                           tag="dealer_money_tag")
 
         for position, dealer_card in enumerate(self.dealer.current_cards, start=0):
             if not dealer_card.visible:
@@ -152,14 +158,19 @@ class DisplayService:
         elif self.player.score > 21:
             self.result = True
             messagebox.showinfo("Result", "Dealer Wins !!", parent=self.top)
+            self.player.money -= 10
         elif self.dealer.score > 21:
             self.result = True
+            self.player.money += 20
             messagebox.showinfo("Result", "Player Wins !!", parent=self.top)
         elif 17 < self.dealer.score < 21 and 21 >= self.player.score > self.dealer.score:
             self.result = True
+            self.player.money += 20
             messagebox.showinfo("Result", "Player Wins !!", parent=self.top)
 
     def run_game(self, reset_game):
+        self.player.prepare_for_new_round()
+        self.dealer.prepare_for_new_round()
         self.deck_service = DeckService()
         self.deck_service.build_deck()
         self.dealer.current_cards = self.deck_service.draw_dealer_cards(self.dealer)
