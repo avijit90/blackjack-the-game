@@ -2,14 +2,13 @@ from tkinter import *
 from tkinter import messagebox
 
 from DeckService import DeckService
-from Player import Player
 
 
 class DisplayService:
 
-    def __init__(self, root):
-        self.player = None
-        self.dealer = None
+    def __init__(self, root, player, dealer):
+        self.player = player
+        self.dealer = dealer
         self.image_to_open = None
         self.top = root
         self.deck_service = None
@@ -163,8 +162,6 @@ class DisplayService:
     def run_game(self, reset_game):
         self.deck_service = DeckService()
         self.deck_service.build_deck()
-        self.player = Player('Player')
-        self.dealer = Player('Dealer')
         self.dealer.current_cards = self.deck_service.draw_dealer_cards(self.dealer)
         self.player.current_cards = self.deck_service.draw_player_cards(self.player)
         self.display_table(self.deck_service.deck, reset_game)

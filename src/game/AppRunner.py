@@ -1,6 +1,7 @@
 from tkinter import Tk
 
 from DisplayService import DisplayService
+from Player import Player
 
 
 class AppRunner:
@@ -11,7 +12,7 @@ class AppRunner:
 
 def execute():
     root = Tk()
-    display_service = DisplayService(root)
+    display_service = DisplayService(root, Player('Player'), Player('Dealer'))
     display_service.run_game(False)
 
 
