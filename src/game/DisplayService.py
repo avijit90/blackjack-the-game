@@ -55,10 +55,10 @@ class DisplayService:
         canvas.create_window(515, 300, anchor=NW, window=reset_button)
 
         canvas.create_text(800, 130, fill="cyan", font="Times 20 italic bold",
-                           text="Dealer Score", tag='clear_on_Reset')
+                           text="Dealer", tag='clear_on_Reset')
 
         canvas.create_text(800, 400, fill="white", font="Times 20 italic bold",
-                           text="Player Score", tag='clear_on_Reset')
+                           text="Player", tag='clear_on_Reset')
 
         canvas.pack()
 
@@ -75,7 +75,7 @@ class DisplayService:
         start = 520
 
         canvas.delete("player_score_tag")
-        canvas.create_text(800, 430, fill="white", font="Times 20 italic bold", text=self.player.score,
+        canvas.create_text(800, 430, fill="white", font="Times 15", text=f'score : {self.player.score}',
                            tag="player_score_tag")
         canvas.delete("player_money_tag")
         canvas.create_text(850, 430, fill="yellow", font="Times 20 italic bold", text=self.player.money,
@@ -92,10 +92,8 @@ class DisplayService:
 
         canvas.delete("dealer_score_tag")
         canvas.delete("dealer_money_tag")
-        canvas.create_text(800, 160, fill="cyan", font="Times 20 italic bold", text=self.dealer.score,
+        canvas.create_text(800, 160, fill="cyan", font="Times 15", text=f'score : {self.dealer.score}',
                            tag="dealer_score_tag")
-        canvas.create_text(850, 160, fill="yellow", font="Times 20 italic bold", text=self.dealer.money,
-                           tag="dealer_money_tag")
 
         for position, dealer_card in enumerate(self.dealer.current_cards, start=0):
             if not dealer_card.visible:
