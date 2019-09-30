@@ -44,15 +44,20 @@ class DisplayService:
         # Player
         self.show_player_cards(canvas)
 
-        hit_button = Button(self.top, text="Hit", command=self.hit, anchor=W)
-        hit_button.configure(width=5, activebackground="#33B5E5", relief=FLAT)
-        canvas.create_window(400, 300, anchor=NW, window=hit_button)
-        stay_button = Button(self.top, text="Stay", command=self.stay, anchor=W)
-        stay_button.configure(width=7, activebackground="#33B5E5", relief=FLAT)
-        canvas.create_window(450, 300, anchor=NW, window=stay_button)
-        reset_button = Button(self.top, text="Play Again", command=self.reset_game, anchor=W)
-        reset_button.configure(width=10, activebackground="#33B5E5", relief=FLAT)
-        canvas.create_window(515, 300, anchor=NW, window=reset_button)
+        hit_button = Button(self.top, text=" Hit", command=self.hit, anchor=W)
+        hit_button.configure(width=4, activebackground="#33B5E5", relief=FLAT)
+        self.hit_button = hit_button
+        canvas.create_window(420, 300, anchor=CENTER, window=self.hit_button)
+
+        stay_button = Button(self.top, text=" Stay", command=self.stay, anchor=W)
+        stay_button.configure(width=4, activebackground="#33B5E5", relief=FLAT)
+        self.stay_button = stay_button
+        canvas.create_window(470, 300, anchor=CENTER, window=self.stay_button)
+
+        reset_button = Button(self.top, text=" Play Again", command=self.reset_game, anchor=W)
+        reset_button.configure(width=9, activebackground="#33B5E5", relief=FLAT, state=DISABLED)
+        self.reset_button = reset_button
+        canvas.create_window(535, 300, anchor=CENTER, window=self.reset_button)
 
         canvas.create_text(800, 130, fill="cyan", font="Times 20 italic bold",
                            text="Dealer", tag='clear_on_Reset')
@@ -156,18 +161,31 @@ class DisplayService:
         if self.player.score == 21 and self.dealer.score == 21:
             self.result = True
             messagebox.showinfo("Result", "Tie", parent=self.top)
+            self.refresh_player_money(self.canvas)
+            self.toggle_button_states()
         elif self.player.score > 21:
             self.result = True
             messagebox.showinfo("Result", "Dealer Wins !!", parent=self.top)
             self.player.money -= 10
+            self.refresh_player_money(self.canvas)
+            self.toggle_button_states()
         elif self.dealer.score > 21:
             self.result = True
             self.player.money += 20
             messagebox.showinfo("Result", "Player Wins !!", parent=self.top)
+            self.refresh_player_money(self.canvas)
+            self.toggle_button_states()
         elif 17 < self.dealer.score < 21 and 21 >= self.player.score > self.dealer.score:
             self.result = True
             self.player.money += 20
             messagebox.showinfo("Result", "Player Wins !!", parent=self.top)
+            self.refresh_player_money(self.canvas)
+            self.toggle_button_states()
+
+    def toggle_button_states(self):
+        self.hit_button.config(state=DISABLED)
+        self.stay_button.config(state=DISABLED)
+        self.reset_button.config(state=NORMAL)
 
     def run_game(self, reset_game):
         self.player.prepare_for_new_round()
