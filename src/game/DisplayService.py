@@ -77,13 +77,16 @@ class DisplayService:
         canvas.delete("player_score_tag")
         canvas.create_text(800, 430, fill="white", font="Times 15", text=f'score : {self.player.score}',
                            tag="player_score_tag")
-        canvas.delete("player_money_tag")
-        canvas.create_text(850, 430, fill="yellow", font="Times 20 italic bold", text=self.player.money,
-                           tag="player_money_tag")
+        self.refresh_player_money(canvas)
 
         for position, player_card in enumerate(self.player.current_cards, start=0):
             canvas.create_image(start + (position * player_spacing), (400 - (position * 9)), anchor=NE,
                                 image=player_card.get_card_image(), tag='clear_on_Reset')
+
+    def refresh_player_money(self, canvas):
+        canvas.delete("player_money_tag")
+        canvas.create_text(800, 450, fill="yellow", font="Times 15", text=f'money : {self.player.money}',
+                           tag="player_money_tag")
 
     def show_dealer_cards(self, canvas, delete_old):
         print(self.dealer)
